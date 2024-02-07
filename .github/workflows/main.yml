@@ -56,6 +56,14 @@ jobs:
         if: github.event_name == 'pull_request'
         continue-on-error: true
 
+      - name: Run Snyk dependency scan (pre-deployment)
+        run: |
+          snyk test --paths terraform/* # Scan only Terraform directory
+          if [ $? -ne 0 ]; then
+            echo "Found vulnerabilities in Terraform dependencies! Please fix them before deploying."
+            exit 1
+          fi
+
       - uses: actions/github-script@v6
         if: github.event_name == 'pull_request'
         env:
