@@ -97,6 +97,9 @@ jobs:
         if: steps.plan.outcome == 'failure'
         run: exit 1
 
+      - name: Set AWS_DEFAULT_REGION for Terraform
+        run: echo "AWS_DEFAULT_REGION=${{ secrets.AWS_REGION }}" >> $GITHUB_ENV
+
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve -input=false
