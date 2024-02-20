@@ -50,12 +50,6 @@ jobs:
         id: validate
         run: terraform validate -no-color
 
-      - name: Terraform Plan
-        id: plan
-        run: terraform plan -no-color
-        if: github.event_name == 'pull_request'
-        continue-on-error: true
-
       - name: Run Snyk dependency scan (pre-deployment)
         run: |
           snyk test --paths terraform/* # Scan only Terraform directory
@@ -63,6 +57,12 @@ jobs:
             echo "Found vulnerabilities in Terraform dependencies! Please fix them before deploying."
             exit 1
           fi
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
 
       - uses: actions/github-script@v6
         if: github.event_name == 'pull_request'
