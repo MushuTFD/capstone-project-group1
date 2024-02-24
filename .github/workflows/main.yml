@@ -49,6 +49,10 @@ jobs:
       id: validate
       run: terraform validate -no-color
 
+    - name: Run Snyk auth
+      id: auth
+      run: snyk auth ${{ secrets.SNYK_TOKEN }}
+
     - name: Run Snyk dependency scan (pre-deployment)
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }} 
