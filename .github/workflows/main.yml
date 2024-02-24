@@ -2,7 +2,7 @@ name: 'DevSecOps CI/CD Pipeline'
 
 on:
   push:
-    branches: [ "dev.snyk" ]
+    branches: [ "dev_snyk" ]
   pull_request:
 
 permissions:
