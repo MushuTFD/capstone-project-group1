@@ -51,11 +51,11 @@ jobs:
 
     - name: Run Snyk auth
       id: auth
-      run: snyk auth ${{ secrets.SNYK_TOKEN }}
+      run: snyk auth ${{ secrets.SNKY_TOKEN }}
 
     - name: Run Snyk dependency scan (pre-deployment)
       env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }} 
+        SNYK_TOKEN: ${{ secrets.SNKY_TOKEN }} 
       run: snyk iac test --severity-threshold=high 
 
     - name: Terraform Plan
