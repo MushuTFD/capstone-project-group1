@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 DEVSECOPS PROJECT
 # Overview
 This project implements a CI/CD pipeline for provisioning and managing infrastructure using Terraform Cloud. It integrates security scanning tools and automates code formatting, validation, and infrastructure changes, ensuring secure and reliable infrastructure deployments."
@@ -85,18 +84,3 @@ Jinn Liong add the deploy-staging.yml file. It is similar to main.yml but with d
 Jinn Liong set up a new branck (snky-dev) and added snky command after Terraform Validate.
 ## 6-Feb-2024
 Wei Yang shared the CICD code and upload to Github
-=======
-# To run this
-
-1) Create a terraform.tfvars within the root folder.
-Write
-aws_region = "ap-southeast-1"
-inside the terraform.tfvars file
-
-# What this code does thus far
-Creates a public subnet and private subnet
-
-
-# TO-DOs
-Create EC2 instances and run servers on the subnets
->>>>>>> main
