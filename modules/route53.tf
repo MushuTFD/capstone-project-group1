@@ -1,5 +1,5 @@
 resource "aws_elb" "main" {
-  name               = "LB" # change this to the ALB name 
+  name               = "test" # change this to the ALB name 
   availability_zones = ["ap-southeast-1"]
 
   listener {
