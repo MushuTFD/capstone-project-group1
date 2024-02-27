@@ -1,9 +1,8 @@
 variable "vpc_id" {
     type = string
-    default = ""
 }
 
-variable "prefix_name" {
+variable "name_prefix" {
     type = string
     default = ""
 }

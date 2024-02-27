@@ -9,8 +9,8 @@ module "vpc" {
 }
 module "alb" {
   source = "./modules/alb"
-  prefix_name = "${local.name_prefix}"
+  name_prefix = "${local.name_prefix}"
 
-  all_subnets = vpc.public_subnets
-  # vpc_id = vpc.output.id
+  all_subnets = module.vpc.public_subnets
+  vpc_id = module.vpc.vpc_id
 }
