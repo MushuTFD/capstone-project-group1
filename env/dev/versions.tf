@@ -10,7 +10,7 @@ cloud {
   organization = "weiyang-org"
 
   workspaces {
-    name = "capstone-project-dev"
+    name = "capstone-project-group1-dev"
   }
 }
 }
