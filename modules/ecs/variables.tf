@@ -36,3 +36,13 @@ variable "container_port_mapping" {
   type = number
   description = "exposed port of the container"
 }
+
+variable "attach_lb_bool" {
+  type = bool
+  default = false
+}
+
+variable "target_group_arn" {
+  type = string
+  default = ""
+}

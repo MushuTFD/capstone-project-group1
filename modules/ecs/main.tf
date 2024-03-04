@@ -9,6 +9,7 @@
 #   # }
 # }
 
+
 module "ecs" {
   source = "terraform-aws-modules/ecs/aws"
 
@@ -52,14 +53,24 @@ module "ecs" {
       subnet_ids = flatten(var.all_subnets)
       security_group_ids = [module.ecs_sg.security_group_id]
 
+      
+      load_balancer = local.load_balancer_needed ? {
+        service = {
+          target_group_arn = var.target_group_arn
+          container_name = "ecs-sample"
+          container_port = var.container_port_mapping
+        }
+      } : {}
     }
-  }
+  } 
 
   tags = {
     Environment = "Development-${var.service_type}"
     Project     = "${var.name_prefix}-${var.service_type}-example"
   }
 }
+
+
 
 module "ecs_sg" {
   source = "terraform-aws-modules/security-group/aws"

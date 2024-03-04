@@ -5,4 +5,6 @@ locals {
 
 
   public_ip_needed = var.public_or_private == "public" ? true : null
+
+  load_balancer_needed = var.attach_lb_bool ? true : false
 }

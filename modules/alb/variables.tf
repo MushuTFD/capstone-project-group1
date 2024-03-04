@@ -11,3 +11,7 @@ variable "all_subnets" {
     type = list(string)
     default = []
 }
+
+variable "service_type" {
+    type = string
+}
