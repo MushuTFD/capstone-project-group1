@@ -1,13 +1,5 @@
-resource "aws_elb" "main" {
-  name               = "LB" # change this to the ALB name 
-  availability_zones = ["ap-southeast-1"]
-
-  listener {
-    instance_port     = 80
-    instance_protocol = "http"
-    lb_port           = 80
-    lb_protocol       = "http"
-  }
+resource "aws_route53_zone" "primary" {
+  name = "sctp-sandbox.com"
 }
 
 resource "aws_route53_record" "www" {
@@ -16,8 +8,8 @@ resource "aws_route53_record" "www" {
   type    = "A"
 
   alias {
-    name                   = aws_elb.main.dns_name
-    zone_id                = aws_elb.main.zone_id
+    name                   = "${var.alb_dns_name}"
+    zone_id                = "${var.zone_id}"
     evaluate_target_health = true
   }
 }
