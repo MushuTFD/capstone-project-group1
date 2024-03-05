@@ -41,8 +41,7 @@ jobs:
     - name: Terraform Init
       id: init
       run: |
-        terraform init -backend-config="sctp-ce4-tfstate-bucket-group1" -backend-config="sctp-ce4-project-g1" -backend-config="ap-southeast-1"
-     
+        terraform init -backend-config="bucket=sctp-ce4-tfstate-bucket-group1" -backend-config="key=sctp-ce4-project-g1" -backend-config="region=ap-southeast-1"    
      
     - name: Terraform fmt
       id: fmt
