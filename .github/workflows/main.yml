@@ -41,12 +41,12 @@ jobs:
     - name: Terraform Init
       id: init
       env:
-        AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
-        AWS_BUCKET_KEY_NAME: ${{ secrets.AWS_BUCKET_KEY_NAME }}
-        AWS_REGION: ${{ github.ref == 'refs/heads/main' && 'ap-southeast-1' || 'ap-southeast-1' }}
-      run: | 
-        AWS_BUCKET_NAME=$(echo $AWS_BUCKET_NAME | xargs)  # Trims using xargs
+        AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}  # Remove xargs for now
+        AWS_BUCKET_KEY_NAME: ${{ secrets.AWS_BUCKET_KEY_NAME }} 
+        AWS_REGION: ap-southeast-1  
+      run: |
         terraform init -backend-config="bucket=${AWS_BUCKET_NAME}" -backend-config="key=${AWS_BUCKET_KEY_NAME}" -backend-config="region=${AWS_REGION}"
+     
      
     - name: Terraform fmt
       id: fmt
