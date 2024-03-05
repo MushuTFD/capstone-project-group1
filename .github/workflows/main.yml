@@ -40,12 +40,8 @@ jobs:
 
     - name: Terraform Init
       id: init
-      env:
-        AWS_BUCKET_NAME: sctp-ce4-tfstate-bucket-group1  # Remove xargs for now
-        AWS_BUCKET_KEY_NAME: sctp-ce4-project-g1
-        AWS_REGION: ap-southeast-1  
       run: |
-        terraform init -backend-config="bucket=${AWS_BUCKET_NAME}" -backend-config="key=${AWS_BUCKET_KEY_NAME}" -backend-config="region=${AWS_REGION}"
+        terraform init
      
      
     - name: Terraform fmt
