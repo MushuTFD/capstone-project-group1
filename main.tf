@@ -23,6 +23,7 @@ module "alb_react" {
 
   all_subnets = module.vpc.public_subnets
   vpc_id = module.vpc.vpc_id
+
 }
 
 module "ecs" {
@@ -58,4 +59,10 @@ module "ecs_react_frontend" {
   attach_lb_bool = true
   target_group_arn = module.alb_react.target_group_arn
 
+}
+
+module "route53_react" {
+  source = "./modules/routes53"
+  alb_dns_name = module.alb_react.load_balancer_dns_name
+  zone_id = module.alb_react.load_balancer_zone_id
 }
