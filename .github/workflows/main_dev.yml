@@ -2,7 +2,7 @@ name: 'DevSecOps CI/CD Pipeline (Terraform Cloud)'
 
 on:
   push:
-    branches: [terraform-cloud]
+    branches: [main]
 
 env:
     TF_CLOUD_ORGANIZATION: "weiyang-org"
