@@ -1,5 +1,5 @@
 resource "aws_lb" "public_alb" {
-  name               = "${var.name_prefix}-public-lb"
+  name               = "${var.name_prefix}-${var.service_type}-lb"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.public_alb_sg.id]
@@ -7,13 +7,13 @@ resource "aws_lb" "public_alb" {
   enable_deletion_protection = false
 
   tags = {
-    Name = "${var.name_prefix}-public-lb"
+    Name = "${var.name_prefix}-${var.service_type}public-lb"
   }
 }
 
 resource "aws_security_group" "public_alb_sg" {
-  name = "${var.name_prefix}-public-lb-sg"
-  description = "Security group for public load balancer"
+  name = "${var.name_prefix}-${var.service_type}-lb-sg"
+  description = "Security group for ${var.service_type} load balancer"
   vpc_id = var.vpc_id
 
   ingress {
@@ -38,15 +38,16 @@ resource "aws_security_group" "public_alb_sg" {
   }
 
   tags = {
-    Name = "${var.name_prefix}-public-alb-sg"
+    Name = "${var.name_prefix}-${var.service_type}-alb-sg"
   }
 
 }
 
 resource "aws_lb_target_group" "public_tg" {
-  name     = "${var.name_prefix}-tg"
+  name     = "${var.name_prefix}-${var.service_type}-tg"
   port     = 80
   protocol = "HTTP"
+  target_type = "ip"
   vpc_id   = var.vpc_id
 
   health_check {
@@ -60,7 +61,7 @@ resource "aws_lb_target_group" "public_tg" {
   }
 
   tags = {
-    Name = "${var.name_prefix}-tg"
+    Name = "${var.name_prefix}-${var.service_type}-tg"
   }
 }
 

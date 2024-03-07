@@ -1,105 +1,95 @@
-name: "Terraform action"
+name: 'DevSecOps CI/CD Pipeline (Terraform Cloud)'
+
 on:
   push:
     branches:
       - main
+      - dev-snky
+      
   pull_request:
+
+
 permissions:
-      id-token: write # This is required for aws oidc connection
-      contents: read # This is required for actions/checkout
-      pull-requests: write # This is required for gh bot to comment PR
-env:
-  TF_LOG: INFO
-  AWS_REGION: ${{ secrets.AWS_REGION }}
+  contents: read
+
 jobs:
-  deploy:
+  initialization:
+    name: initialization
     runs-on: ubuntu-latest
-    defaults:
+    environment: ${{ github.ref == 'refs/heads/main' && 'prod' || 'dev' }} # Notice indentation!
+
+    env:            
+      AWS_REGION: ${{ github.ref == 'refs/heads/main' && 'ap-southeast-1' || 'ap-northeast-1' }}
+  
+    defaults: 
       run:
         shell: bash
-        working-directory: .
+
     steps:
-      - name: Git checkout
+    - name: Check out repository code
+      uses: actions/checkout@v3
+    - name: Clear Terraform Cache 
+      run: rm -rf .terraform 
+
+  #install-dependencies:
+  #  name: install-dependencies
+  #  runs-on: ubuntu-latest
+  #  needs: initialization
+  #  steps:
+  #    - name: Check out repository code
+  #      uses: actions/checkout@v3
+  #    - name: Install Snyk 
+  #      run: npm install -g snyk
+      # - name: Run Installation of Dependencies Commands
+      #   run: npm install  
+
+  # npm-audit:
+  #  name: Scan and Fix Vulnerabilities with npm
+  #  runs-on: ubuntu-latest
+  #  needs: install-dependencies
+  #  steps:
+  #    - name: Check out repository code
+  #      uses: actions/checkout@v3
+  #    - name: Run npm audit fix
+  #      run: npm audit fix
+  #    - name: Run Scanning of Dependencies Commands
+  #      run: npm audit
+        
+  terraform-check:
+    name: pre-check with terraform
+    runs-on: ubuntu-latest
+    needs: initialization
+    steps:
+      - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Configure AWS credentials from AWS account
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          role-to-assume: ${{ secrets.AWS_ROLE }}
-          aws-region: ${{ secrets.AWS_REGION }}
-          role-session-name: GitHub-OIDC-TERRAFORM
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: 1.6.6
-
+      
+      - name: Terraform Init
+        id: init
+        env:
+          AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}'
+          AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
+        run: |
+          terraform init -backend-config="bucket=sctp-ce4-tfstate-bucket-group1" -backend-config="key=sctp-ce4-project-g1" -backend-config="region=ap-southeast-1"
+      
       - name: Terraform fmt
         id: fmt
         run: terraform fmt -check
         continue-on-error: true
 
-      - name: Terraform Init
-        id: init
-        env:
-          AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
-          AWS_BUCKET_KEY_NAME: ${{ secrets.AWS_BUCKET_KEY_NAME }}
-        run: terraform init -backend-config="bucket=${AWS_BUCKET_NAME}" -backend-config="key=${AWS_BUCKET_KEY_NAME}" -backend-config="region=${AWS_REGION}"
-
       - name: Terraform Validate
         id: validate
         run: terraform validate -no-color
-
-      - name: Terraform Plan
-        id: plan
-        run: terraform plan -no-color
-        if: github.event_name == 'pull_request'
         continue-on-error: true
-
-      - uses: actions/github-script@v6
-        if: github.event_name == 'pull_request'
+      
+  synk-test:
+    runs-on: ubuntu-latest
+    needs: initialization
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install snyk
+        run : npm install -g snyk
+      - name: Run Snyk to check for vulnerabilities
+        run: snyk iac test --severity-threshold=high 
         env:
-          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
-            #### Terraform Initialization \`${{ steps.init.outcome }}\`
-            #### Terraform Validation \`${{ steps.validate.outcome }}\`
-            <details><summary>Validation Output</summary>
-
-            \`\`\`\n
-            ${{ steps.validate.outputs.stdout }}
-            \`\`\`
-
-            </details>
-
-            #### Terraform Plan \`${{ steps.plan.outcome }}\`
-
-            <details><summary>Show Plan</summary>
-
-            \`\`\`\n
-            ${process.env.PLAN}
-            \`\`\`
-
-            </details>
-
-            *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
-
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: output
-            })
-
-      - name: Terraform Plan Status
-        if: steps.plan.outcome == 'failure'
-        run: exit 1
-
-      - name: Set AWS_DEFAULT_REGION for Terraform
-        run: echo "AWS_DEFAULT_REGION=${{ secrets.AWS_REGION }}" >> $GITHUB_ENV
-
-      - name: Terraform Apply
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply -auto-approve -input=false
+          SNYK_TOKEN: '${{ secrets.SNYK_TOKEN }}'
