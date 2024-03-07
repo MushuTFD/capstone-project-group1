@@ -8,7 +8,7 @@ module "vpc" {
   create_natgw = true
 }
 module "alb_flask" {
-  source = "./modules/alb"
+  source = "../../modules/alb"
   name_prefix = "${local.name_prefix}"
   service_type = "${local.backend_service}"
 
@@ -17,7 +17,7 @@ module "alb_flask" {
 }
 
 module "alb_react" {
-  source = "./modules/alb"
+  source = "../../modules/alb"
   name_prefix = "${local.name_prefix}"
   service_type = "${local.frontend_service}"
 
@@ -26,7 +26,7 @@ module "alb_react" {
 }
 
 module "ecs" {
-  source = "./modules/ecs"
+  source = "../../modules/ecs"
   name_prefix = "${local.name_prefix}"
   vpc_id = module.vpc.vpc_id
 
@@ -44,7 +44,7 @@ module "ecs" {
 }
 
 module "ecs_react_frontend" {
-  source = "./modules/ecs"
+  source = "../../modules/ecs"
   name_prefix = "${local.name_prefix}"
   vpc_id = module.vpc.vpc_id
   all_subnets = module.vpc.public_subnets
