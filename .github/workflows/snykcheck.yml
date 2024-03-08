@@ -41,3 +41,4 @@ jobs:
         run: snyk iac test --report --severity-threshold=high || true 
         env:
           SNYK_TOKEN: '${{ secrets.SNYK_TOKEN }}'
+          
