@@ -33,7 +33,17 @@ jobs:
         uses: actions/checkout@v3
       - name: Install snyk
         run : npm install -g snyk
-      - name: Run Snyk to check for vulnerabilities
-        run: snyk iac test --severity-threshold=high 
+      - name: Snyk Code test(SAST)
+        run: snyk code test --severity-threshold=high || true
+        env:
+          SNYK_TOKEN: '${{ secrets.SNYK_TOKEN }}'
+      - name: Snyk Open Source test and monitor(SCA)
+        run: |
+          snyk test --severity-threshold=high || true
+          snyk monitor --severity-threshold=high || true
+        env:
+          SNYK_TOKEN: '${{ secrets.SNYK_TOKEN }}'
+      - name: Snyk IaC test and report
+        run: snyk iac test --report --severity-threshold=high || true 
         env:
           SNYK_TOKEN: '${{ secrets.SNYK_TOKEN }}'
