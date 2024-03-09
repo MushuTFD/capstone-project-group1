@@ -8,4 +8,4 @@ output "flask_lb_dns_name" {
 
 output "react_lb_dns_name" {
   value = "${module.alb_react.load_balancer_dns_name}"
-}
+} 
