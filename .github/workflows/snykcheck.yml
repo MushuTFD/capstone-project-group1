@@ -37,12 +37,12 @@ jobs:
         run: snyk code test --severity-threshold=high || true
         env:
           SNYK_TOKEN: '${{ secrets.SNYK_TOKEN }}'
-#      - name: Snyk Open Source test and monitor(SCA)
-#        run: |
-#          snyk test --severity-threshold=high || true
-#          snyk monitor --severity-threshold=high || true
-#        env:
-#          SNYK_TOKEN: '${{ secrets.SNYK_TOKEN }}'
+      - name: Snyk Open Source test and monitor(SCA)
+        run: |
+          snyk test --severity-threshold=high || true
+          snyk monitor --severity-threshold=high || true
+        env:
+          SNYK_TOKEN: '${{ secrets.SNYK_TOKEN }}'
       - name: Snyk IaC test and report
         run: snyk iac test --report --severity-threshold=high || true 
         env:
