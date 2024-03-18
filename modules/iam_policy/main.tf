@@ -2,7 +2,7 @@ resource "aws_iam_policy" "flask_app_policy" {
   name = "flask_app_policy"
   description = "Allow access to ECS"
 
-  policy = jsondecode({
+  policy = jsonencode({
     "Version": "2012-10-17",
     "Statement": [
         {
@@ -19,7 +19,7 @@ resource "aws_iam_policy" "react_app_policy" {
   name = "react_app_policy"
   description = "Allow access to S3"
 
-  policy = jsondecode({
+  policy = jsonencode({
     "Version": "2012-10-17",
     "Statement": [
         {

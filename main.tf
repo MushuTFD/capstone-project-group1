@@ -66,3 +66,7 @@ module "route53_react" {
   alb_dns_name = module.alb_react.load_balancer_dns_name
   zone_id = module.alb_react.load_balancer_zone_id
 }
+
+module "iam_policy" {
+  source = "./modules/iam_policy"
+}
