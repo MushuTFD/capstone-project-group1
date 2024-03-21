@@ -1,6 +1,6 @@
 resource "aws_iam_policy" "flask_app_policy" {
   name = "flask_app_policy"
-  description = "Allow access to ECS"
+  description = "Allow access to RDS"
 
   policy = jsonencode({
     "Version": "2012-10-17",
@@ -8,7 +8,7 @@ resource "aws_iam_policy" "flask_app_policy" {
         {
             "Sid": "VisualEditor0",
             "Effect": "Allow",
-            "Action": "ecs:*",
+            "Action": "rds:*",
             "Resource": "*"
         }
     ]
