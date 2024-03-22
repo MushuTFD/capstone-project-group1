@@ -1,6 +1,6 @@
 DEVSECOPS PROJECT
 # Overview
-This project establishes a robust CI/CD pipeline for Terraform Cloud infrastructure provisioning and management.  Security is prioritized through integrated Snyk scanning along with automatic code formatting, validation, and infrastructure updates.
+This project establishes a robust CI/CD pipeline for Terraform Cloud infrastructure provisioning and management. Security is prioritized through integrated Snyk scanning along with automatic code formatting, validation, and infrastructure updates.
 
 # Workflow Triggers
 ## List the events that trigger the workflow:
