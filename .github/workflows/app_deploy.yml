@@ -6,7 +6,7 @@ on:
         
 env:            
   AWS_REGION: ap-southeast-1           
-  ECR_REPOSITORY:      
+  ECR_REPOSITORY: richie-react-app    
   ECS_SERVICE: ${var.name_prefix}-${var.service_type}-svc      
   ECS_CLUSTER: ${var.name_prefix}-${var.service_type}-ecs                 
   CONTAINER_NAME: ecs-sample
