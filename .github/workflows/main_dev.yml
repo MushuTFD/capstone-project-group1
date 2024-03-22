@@ -6,7 +6,7 @@ on:
 
 env:
     TF_CLOUD_ORGANIZATION: "weiyang-org"
-    TF_WORKSPACE: "group1-capstone-dev"
+    TF_WORKSPACE: "capstone-project-group1-dev"
     CONFIG_DIRECTORY: "env/dev"
 
 permissions:
