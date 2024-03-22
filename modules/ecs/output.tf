@@ -5,3 +5,7 @@ output "image_name" {
 output "services" {
   value = module.ecs.services
 }
+
+output "task_name" {
+  value = module.ecs.task_exec_iam_role_name
+}

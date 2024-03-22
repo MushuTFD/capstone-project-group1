@@ -1,10 +1,10 @@
-resource "aws_route53_zone" "primary" {
+data "aws_route53_zone" "primary" {
   name = "sctp-sandbox.com"
 }
 
 resource "aws_route53_record" "www" {
-  zone_id = aws_route53_zone.primary.zone_id
-  name    = "sctp-sandbox.com"
+  zone_id = data.aws_route53_zone.primary.zone_id
+  name    = "group1.sctp-sandbox.com"
   type    = "A"
 
   alias {
