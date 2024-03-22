@@ -3,6 +3,7 @@ name: Deploy to Amazon ECS
 on:
     push:
         branches: [main]
+        
 env:            
   AWS_REGION: ap-southeast-1           
   ECR_REPOSITORY:      
