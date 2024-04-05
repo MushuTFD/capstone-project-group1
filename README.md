@@ -1,14 +1,20 @@
 DEVSECOPS PROJECT
 # Overview
-This project establishes a robust CI/CD pipeline for Terraform Cloud infrastructure provisioning and management. Security is prioritized through integrated Snyk scanning along with automatic code formatting, validation, and infrastructure updates.
+This project builds a robust CI/CD pipeline for a to-do list application, hosted on AWS infrastructure provisioned using Terraform Cloud. Security is a core focus, with integrated Snyk scanning along with automatic infrastructure updates.
 
-# Workflow Triggers
+# Project Vision
+We aim to create a user-friendly and secure to-do list application that allows users to easily manage their tasks and stay organized.
+
+# Architecture
+![workflow](https://github.com/MushuTFD/capstone-project-group1/blob/hangy/msg-4003755471-1051147.jpg)
+
+# CI/CD Triggers
 ## List the events that trigger the workflow:
 The CI/CD pipeline is automatically triggered by the following events:
 
-- Pushes to the main branch: Changes to production-ready code initiate the production deployment workflow.
-- Pushes to the dev-snky branch: Changes to development code initiate the development environment workflow.
-- Pull Requests targeting main or dev-snky: Ensures code changes undergo review and security checks before integration.
+- Pushes to the main branch (production deployment)
+- Pushes to the dev-snky branch (development deployment)
+- Pull requests to main or dev-snky (code review and security checks)
 
 # Workflow Steps
 ## Checkout Code:
@@ -18,7 +24,17 @@ The CI/CD pipeline is automatically triggered by the following events:
 4. Terraform fmt: Enforces consistent code formatting.
 5. Terraform Validate: Validates the syntax and structure of Terraform configurations.
 6. Snyk Installation (If needed): Installs the Snyk CLI for security scanning.
-7. Snyk IaC Test: Scans Terraform code for infrastructure-as-code vulnerabilities (high severity issues are reported)..
+7. Snyk IaC Scanning: Terraform code for potential infrastructure security vulnerabilities.
+8. Snyk SAST Scanning : Analyzes application code to find security flaws and weaknesses.
+9. Snyk SCA Scanning (Open Source Test and Monitor): Checks for known vulnerabilities in your project's open-source dependencies and sets up continuous monitoring.
+10. Environment-Specific Deployment via Terraform Cloud
+
+## Security Considerations
+- Snyk IaC Scanning: Proactively identifies potential security misconfigurations in infrastructure-as-code.
+- Snyk SAST Scanning:  Analyzes application code to find vulnerabilities. 
+- Snyk SCA Scanning: Detects known vulnerabilities in open-source dependencies and sets up continuous monitoring.
+- Environment Separation: Reduces the risk of accidental changes to production by isolating development environments.
+- Secrets Management: Sensitive credentials are stored securely in GitHub secrets.
 
 ## Environment Management:
 - main branch: Represents the production environment, with resources deployed typically in the ap-southeast-1 AWS region.
@@ -34,10 +50,9 @@ Each environment requires the following secrets stored in GitHub:
 ## Terraform Cloud Integration:
 Successful completion of local checks in the CI/CD workflow triggers Terraform Cloud runs to apply infrastructure changes.
 
-## Security Considerations:
-- Snyk IaC Scanning: Proactively identifies potential security misconfigurations in infrastructure code.
-- Environment Separation: Reduces the risk of accidental changes to production by isolating development environments.
-- Secrets Management: Sensitive credentials are stored securely in GitHub secrets.
+# Future Improvements
+- Enhanced Security: Implement WAF, Cloudflare, etc.
+- Observability: Integrate CloudWatch, X-ray, and other monitoring tools.
 
 # Revision
 ## 13-Mar-2024
